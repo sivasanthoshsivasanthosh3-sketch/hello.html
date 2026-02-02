@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do You Love Me 💖</title>
+
+<style>
+/* ================= RESET ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',Arial,sans-serif;
+}
+
+/* ================= BACKGROUND ================= */
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(270deg,#ff0066,#6a00ff,#00e5ff,#00ff9d);
+  background-size:800% 800%;
+  animation:bgFlow 15s ease infinite;
+}
+
+@keyframes bgFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ================= CARD ================= */
+.card{
+  width:360px;
+  height:580px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(18px);
+  border-radius:28px;
+  padding:25px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 30px 60px rgba(0,0,0,0.4);
+}
+
+/* ================= TITLE ================= */
+h1{
+  color:#fff;
+  font-size:26px;
+  margin-bottom:10px;
+  text-shadow:0 0 15px rgba(255,255,255,0.7);
+}
+
+/* ================= EMOJI ================= */
+.emoji{
+  font-size:120px;
+  margin:35px 0;
+  transition:0.2s;
+}
+
+/* SHAKE */
+.shake{
+  animation:shake 0.3s;
+}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
+/* ================= BUTTON AREA ================= */
+.buttons{
+  position:relative;
+  height:160px;
+}
+
+button{
+  padding:14px 28px;
+  font-size:17px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  position:absolute;
+  transition:0.15s;
+}
+
+/* YES */
+#yes{
+  background:linear-gradient(135deg,#00ffcc,#00c3ff);
+  color:#002;
+  left:60px;
+  bottom:25px;
+  box-shadow:0 0 18px rgba(0,255,255,0.9);
+}
+
+/* NO */
+#no{
+  background:linear-gradient(135deg,#ff0033,#ff0000);
+  color:#fff;
+  right:60px;
+  bottom:25px;
+  box-shadow:0 0 18px rgba(255,0,0,0.9);
+}
+
+/* ================= RESULT ================= */
+.result{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.result h2{
+  font-size:30px;
+  color:#ff0055;
+}
+
+/* ================= HEARTS ================= */
+.hearts{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.heart{
+  position:absolute;
+  font-size:22px;
+  animation:float 4s linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(120%);opacity:1;}
+  to{transform:translateY(-140%);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>Do you love me? 💖</h1>
+
+  <div class="emoji" id="emoji">🥺</div>
+
+  <div class="buttons">
+    <button id="yes">Yes 💕</button>
+    <button id="no">No 😈</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result" id="result">
+    <h2>I knew it 😍</h2>
+    <div class="hearts" id="hearts"></div>
+  </div>
+
+</div>
+
+<!-- SOUNDS -->
+<audio id="yesSound" src="yes.mp3"></audio>
+<audio id="noSound" src="no.mp3"></audio>
+<audio id="popSound" src="pop.mp3"></audio>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const emoji = document.getElementById("emoji");
+const result = document.getElementById("result");
+const heartsBox = document.getElementById("hearts");
+
+const yesSound = document.getElementById("yesSound");
+const noSound = document.getElementById("noSound");
+const popSound = document.getElementById("popSound");
+
+/* ================= NO BUTTON LOGIC ================= */
+function escapeNo(){
+  const x = Math.random()*240;
+  const y = Math.random()*120;
+
+  noBtn.style.left = x+"px";
+  noBtn.style.top = y+"px";
+
+  emoji.innerText="😡";
+  emoji.classList.add("shake");
+  noSound.play();
+
+  setTimeout(()=>{
+    emoji.innerText="🥺";
+    emoji.classList.remove("shake");
+  },600);
+}
+
+noBtn.addEventListener("mouseover", escapeNo);
+noBtn.addEventListener("click", escapeNo);
+
+/* ================= YES BUTTON ================= */
+yesBtn.addEventListener("click", ()=>{
+  yesSound.play();
+  result.style.display="flex";
+  heartRain();
+});
+
+/* ================= HEART RAIN ================= */
+function heartRain(){
+  for(let i=0;i<40;i++){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerText="❤️";
+    heart.style.left=Math.random()*100+"%";
+    heart.style.animationDuration=(2+Math.random()*3)+"s";
+    heartsBox.appendChild(heart);
+    popSound.play();
+
+    setTimeout(()=>heart.remove(),4000);
+  }
+}
+</script>
+
+</body>
+</html>
